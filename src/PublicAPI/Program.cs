@@ -22,6 +22,31 @@ builder.Services.AddSwaggerGen(options =>
         Title = "Movies",
         Description = "Demo API - Clean Architecture Solution in .NET 6",
     });
+
+    options.AddSecurityDefinition("basic", new OpenApiSecurityScheme
+    {
+        Description = "api key.",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "basic"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "basic"
+                },
+                In = ParameterLocation.Header
+            },
+            new List<string>()
+        }
+    });
 });
 
 builder.Services.AddControllersWithViews(options =>
